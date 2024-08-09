@@ -27,7 +27,14 @@ function App() {
 
   const getWebSiteData = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${protocol}${webUrl}`);
+      let fullUrl = webUrl;
+
+      // Check if webUrl starts with http:// or https://
+      if (!/^https?:\/\//i.test(webUrl)) {
+        fullUrl = `${protocol}${webUrl}`;
+      }
+
+      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${fullUrl}`);
       const data = await response.json();
 
       setWebData(data);
