@@ -8,6 +8,7 @@ function App() {
   const [newMessage, setNewMessage] = useState('');
   const [webUrl, setWebUrl] = useState('');
   const [webData, setWebData] = useState({});
+  const [protocol, setProtocol] = useState('https://');
 
   const messagesEndRef = useRef(null);
 
@@ -26,7 +27,7 @@ function App() {
 
   const getWebSiteData = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${webUrl}`);
+      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${protocol}${webUrl}`);
       const data = await response.json();
 
       setWebData(data);
@@ -43,7 +44,7 @@ function App() {
 
   const handleQuestion = (question) => {
     let answer = "Sorry, I don't have an answer for that.";
-    
+
     // Example: Simple keyword matching
     if (question.includes("title")) {
       answer = `The title is: ${webData?.title}`;
@@ -58,9 +59,17 @@ function App() {
     ]);
   };
 
+  const handleProtocolChange = (event) => {
+    setProtocol(event.target.value + '://');
+  };
+
   return (
     <div className="chat-container">
-      <div className="message-input">
+      <div className="url-input">
+        <select value={protocol.replace('://', '')} onChange={handleProtocolChange}>
+          <option value="http">http</option>
+          <option value="https">https</option>
+        </select>
         <input
           type="text"
           value={webUrl}

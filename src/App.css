@@ -74,7 +74,37 @@
   margin-right: 10px;
 }
 
+.url-input {
+  display: flex;
+  padding: 10px 0;
+}
+
+.url-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 0 20px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 20px 0;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
 .message-input button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+.url-input button {
   padding: 10px 20px;
   border-radius: 20px;
   border: none;
