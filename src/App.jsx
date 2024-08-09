@@ -32,7 +32,7 @@ function App() {
 
   const getWebSiteData = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=https://${webUrl}`);
+      const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${webUrl}`);
       const data = await response.json();
 
       // Update web data state
@@ -45,9 +45,6 @@ function App() {
         { text: `Description: ${data?.content?.paragraphs}`, sender: "bot" },
         // ...data.links.map((link, index) => ({ text: link, sender: "bot", key: index }))
       ]);
-
-      // Optionally clear web URL after data fetching
-      setWebUrl('');
     } catch (error) {
       console.error("Error fetching website data:", error);
     }
