@@ -5,51 +5,58 @@ function App() {
   const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   const [messages, setMessages] = useState([]);
-
   const [newMessage, setNewMessage] = useState('');
-  const [webUrl, setWebUrl] = useState('')
-  const [webData, setWebData] = useState({})
+  const [webUrl, setWebUrl] = useState('');
+  const [webData, setWebData] = useState({});
 
   const messagesEndRef = useRef(null);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      setMessages([...messages, { text: newMessage, sender: "user" }]);
+      const userMessage = { text: newMessage, sender: "user" };
+      setMessages([...messages, userMessage]);
+      handleQuestion(newMessage);
       setNewMessage('');
     }
   };
 
   useEffect(() => {
-    // Scroll to the bottom whenever messages change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  useEffect(() => {
-    if (webUrl.trim()) {
-      getWebSiteData()
-    }
-  }, [])
 
   const getWebSiteData = async () => {
     try {
       const response = await fetch(`${apiEndpoint}/scrap/cheerio?url=${webUrl}`);
       const data = await response.json();
 
-      // Update web data state
       setWebData(data);
 
-      // Construct messages based on fetched data
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: `Title: ${data?.title}`, sender: "bot" },
-        { text: `Description: ${data?.content?.paragraphs}`, sender: "bot" },
-        // ...data.links.map((link, index) => ({ text: link, sender: "bot", key: index }))
+        { text: `Description: ${data?.content?.paragraphs.join(' ')}`, sender: "bot" },
       ]);
     } catch (error) {
       console.error("Error fetching website data:", error);
     }
   };
 
+  const handleQuestion = (question) => {
+    let answer = "Sorry, I don't have an answer for that.";
+    
+    // Example: Simple keyword matching
+    if (question.includes("title")) {
+      answer = `The title is: ${webData?.title}`;
+    } else if (question.includes("description") || question.includes("content")) {
+      answer = `The description is: ${webData?.content?.paragraphs.join(' ')}`;
+    }
+
+    // Add the bot's answer to the messages
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: answer, sender: "bot" },
+    ]);
+  };
 
   return (
     <div className="chat-container">
@@ -58,7 +65,7 @@ function App() {
           type="text"
           value={webUrl}
           onChange={(e) => setWebUrl(e.target.value)}
-          placeholder="Enter Website url..."
+          placeholder="Enter Website URL..."
         />
         <button onClick={getWebSiteData}>Submit</button>
       </div>
@@ -71,7 +78,6 @@ function App() {
             {message.text}
           </div>
         ))}
-        {/* This is a dummy div to scroll into view */}
         <div ref={messagesEndRef} />
       </div>
       <div className="message-input">
