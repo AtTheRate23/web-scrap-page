@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
+import nlp from 'compromise';
 
 function App() {
   const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
@@ -52,14 +53,24 @@ function App() {
   const handleQuestion = (question) => {
     let answer = "Sorry, I don't have an answer for that.";
 
-    // Example: Simple keyword matching
-    if (question.includes("title")) {
+    // // Basic NLP with keyword matching
+    // if (question.includes("title")) {
+    //   answer = `The title is: ${webData?.title}`;
+    // } else if (question.includes("description") || question.includes("content")) {
+    //   answer = `The description is: ${webData?.content?.paragraphs.join(' ')}`;
+    // } else if (question.includes("links")) {
+    //   const links = webData?.content?.links?.join(', ') || 'No links found';
+    //   answer = `Here are the links: ${links}`;
+    // }
+
+    // Example of using a more advanced NLP approach
+    const doc = nlp(question);
+    if (doc.has('title')) {
       answer = `The title is: ${webData?.title}`;
-    } else if (question.includes("description") || question.includes("content")) {
+    } else if (doc.has('description') || doc.has('content')) {
       answer = `The description is: ${webData?.content?.paragraphs.join(' ')}`;
     }
 
-    // Add the bot's answer to the messages
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: answer, sender: "bot" },

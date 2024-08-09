@@ -31,12 +31,15 @@
   background-color: #f5f5f5;
   border-radius: 5px;
   /* add these rules to hide scrollbar */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .message-list::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
+  display: none;
+  /* Chrome, Safari, and Opera */
 }
 
 .message {
@@ -82,16 +85,16 @@
 .url-input input {
   flex: 1;
   padding: 10px;
-  border-radius: 0 20px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  margin-right: 10px;
+  margin-right: 5px;
+  height: 22px;
 }
 
 select {
-  padding: 10px;
-  border-radius: 20px 0;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  margin-right: 10px;
+  margin-right: 5px;
   background-color: #f8f9fa;
   color: #343a40;
 }
@@ -104,9 +107,8 @@ select {
   color: white;
   cursor: pointer;
 }
+
 .url-input button {
-  padding: 10px 20px;
-  border-radius: 20px;
   border: none;
   background-color: #007bff;
   color: white;
@@ -115,4 +117,17 @@ select {
 
 .message-input button:hover {
   background-color: #0056b3;
+}
+
+/* // media query for less than 425 px display */
+@media screen and (max-width: 425px) {
+  .chat-container {
+    width: 100%;
+  }
+
+  .url-input input,
+  .url-input button {
+    padding: 5px;
+    font-size: 10px;
+  }
 }
